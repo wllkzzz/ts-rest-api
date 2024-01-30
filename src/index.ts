@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import http from "http";
+import router from "./routes/index"
 dotenv.config();
 
 const PORT = process.env.SERVER_PORT || 3000;
@@ -10,6 +11,8 @@ const MONGO_URL = process.env.MONGO_URL;
 
 const app = express();
 app.use(express.json());
+app.use("/api", router)
+
 
 
 const server = http.createServer(app)
