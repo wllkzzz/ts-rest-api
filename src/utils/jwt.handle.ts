@@ -1,4 +1,4 @@
-import { sign } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 
 
 const generateJwt = async (email: string) => {
@@ -8,4 +8,9 @@ const generateJwt = async (email: string) => {
     return jwt;
 };
 
-export {generateJwt};
+const verifyJwt = async (token: string) => {
+    const checkJwt = verify(token, process.env.JWT_SECRET);
+    return checkJwt
+}
+
+export {generateJwt, verifyJwt};
