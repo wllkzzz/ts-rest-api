@@ -1,6 +1,6 @@
 import express from "express";
 import bcrypt from "bcrypt";
-import { getUserByEmail, getUserById, getUsers, createUser, deleteUserById, updateUserById } from "../models/User";
+import { getUserByEmail, getUserById, getUsers, deleteUserById, updateUserById } from "../models/User";
 
 export const getAllUsers = async (req: express.Request, res: express.Response) => {
     try {
@@ -58,36 +58,6 @@ export const getUserEmail = async (req: express.Request, res: express.Response) 
     }
 }
 
-export const createNewUser = async (req: express.Request, res: express.Response) => {
-    try {
-        const { email, password } = req.body;
-
-        if (!email || !password) {
-            return res.status(400).json({ "message": "Email and password are required" });
-        }
-
-        const existingUser = await getUserByEmail(email);
-
-        if (existingUser) {
-            return res.status(400).json({ "message": "User already exists" });
-        }
-
-        const hashPassword = await bcrypt.hash(password, 10);
-
-        const userInput = {
-            email,
-            password: hashPassword,
-        };
-
-        const newUser = await createUser(userInput);
-        await newUser.save()
-
-        return res.status(201).json({ "message": "User created successfully"});
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ "message": "Internal Server Error" });
-    }
-}
 
 export const deleteUser = async (req: express.Request, res: express.Response) => {
     try {
